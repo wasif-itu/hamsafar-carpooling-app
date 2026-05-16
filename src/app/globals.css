@@ -1,0 +1,218 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Design Tokens (HSL for Tailwind v3 compatibility) ─── */
+@layer base {
+  :root {
+    /* Surfaces */
+    --background: 40 14% 98%;       /* #FAFAF9 warm off-white */
+    --foreground: 215 28% 17%;      /* slate-900 */
+    --card: 0 0% 100%;
+    --card-foreground: 215 28% 17%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 28% 17%;
+
+    /* Primary — Trust Teal #0F766E */
+    --primary: 177 73% 26%;
+    --primary-foreground: 0 0% 100%;
+    --primary-light: 174 72% 40%;   /* #14B8A6 */
+    --primary-dark: 177 56% 18%;    /* #134E4A */
+
+    /* Secondary */
+    --secondary: 215 16% 93%;       /* slate-100 */
+    --secondary-foreground: 215 28% 17%;
+
+    /* Accent — Safety Coral #EC4899 */
+    --accent: 330 81% 60%;
+    --accent-foreground: 0 0% 100%;
+
+    /* Feedback */
+    --destructive: 0 72% 51%;       /* #DC2626 */
+    --destructive-foreground: 0 0% 100%;
+    --muted: 215 16% 93%;
+    --muted-foreground: 215 16% 47%;
+
+    /* Border & Input */
+    --border: 25 6% 90%;            /* #E7E5E4 stone-200 */
+    --input: 25 6% 90%;
+    --ring: 177 73% 26%;
+
+    --radius: 0.75rem;
+  }
+
+  * {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+
+  html {
+    @apply font-sans;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-slate-100 text-foreground antialiased;
+    font-family: var(--font-inter), system-ui, sans-serif;
+    font-feature-settings: 'cv11', 'ss01';
+  }
+}
+
+/* ─── Layout Utilities ─── */
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+
+  /* Safe bottom area for devices with home indicator */
+  .pb-safe { padding-bottom: max(env(safe-area-inset-bottom), 8px); }
+}
+
+/* ─── Component Classes ─── */
+@layer components {
+  /* ── Phone frame ── */
+  .phone-frame {
+    @apply relative mx-auto overflow-hidden bg-background shadow-2xl;
+    width: 390px;
+    min-height: 100dvh;
+    max-height: 100dvh;
+    border-radius: 40px;
+    box-shadow:
+      0 0 0 2px #1e293b,
+      0 0 0 6px #334155,
+      0 32px 80px rgba(0,0,0,0.45);
+  }
+
+  /* Screen scroll container */
+  .screen {
+    @apply flex flex-col w-full overflow-y-auto overflow-x-hidden bg-background;
+    height: 100dvh;
+    min-height: 100vh;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* ── Buttons ── */
+  .btn-primary {
+    @apply flex items-center justify-center gap-2 w-full rounded-full font-semibold text-base
+           text-white transition-all duration-150 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
+    height: 56px;
+    background: linear-gradient(135deg, #14B8A6 0%, #0F766E 60%, #134E4A 100%);
+    box-shadow: 0 4px 16px rgba(15,118,110,0.40);
+  }
+  .btn-primary:hover:not(:disabled) {
+    box-shadow: 0 6px 20px rgba(15,118,110,0.50);
+    transform: translateY(-1px);
+  }
+
+  .btn-outline {
+    @apply flex items-center justify-center gap-2 w-full rounded-full font-semibold text-base
+           border-2 border-primary text-primary bg-transparent
+           transition-all duration-150 active:scale-95 disabled:opacity-50;
+    height: 56px;
+  }
+  .btn-outline:hover:not(:disabled) {
+    @apply bg-primary/5;
+  }
+
+  .btn-ghost {
+    @apply flex items-center justify-center gap-1.5 rounded-xl font-medium text-sm
+           text-primary bg-primary/10 transition-all duration-150 active:scale-95 px-4 py-2;
+  }
+
+  /* ── Input ── */
+  .input-field {
+    @apply w-full px-4 rounded-xl border border-border bg-white text-sm text-foreground
+           placeholder-muted-foreground outline-none transition-all duration-150;
+    height: 52px;
+  }
+  .input-field:focus {
+    @apply border-primary;
+    box-shadow: 0 0 0 3px rgba(15,118,110,0.12);
+  }
+
+  /* ── OTP box ── */
+  .otp-box {
+    @apply text-center text-2xl font-bold rounded-2xl border-2 border-border
+           bg-slate-50 outline-none transition-all duration-150;
+    width: 48px;
+    height: 60px;
+  }
+  .otp-box:focus {
+    @apply border-primary bg-white;
+    box-shadow: 0 0 0 3px rgba(15,118,110,0.15);
+  }
+  .otp-box.filled {
+    @apply border-primary/60 bg-primary/5;
+  }
+
+  /* ── Cards ── */
+  .card {
+    @apply bg-white rounded-2xl border border-border p-4 shadow-sm;
+  }
+  .card-interactive {
+    @apply card transition-all duration-200 hover:shadow-md active:scale-[0.99];
+  }
+
+  /* ── Bottom nav ── */
+  .bottom-nav {
+    @apply fixed bg-white border-t border-border z-50;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 390px;
+    padding-bottom: max(env(safe-area-inset-bottom), 8px);
+    box-shadow: 0 -1px 0 #E7E5E4, 0 -8px 24px rgba(0,0,0,0.06);
+  }
+
+  /* ── Verification badge ── */
+  .badge-cnic       { @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-blue-50 text-blue-600 border border-blue-200; }
+  .badge-university { @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-teal-50 text-teal-700 border border-teal-200; }
+  .badge-workplace  { @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-indigo-50 text-indigo-600 border border-indigo-200; }
+
+  /* ── Context badges ── */
+  .ctx-campus    { @apply bg-blue-50 text-blue-700 border border-blue-200; }
+  .ctx-city      { @apply bg-teal-50 text-teal-700 border border-teal-200; }
+  .ctx-intercity { @apply bg-amber-50 text-amber-700 border border-amber-200; }
+
+  /* ── Status pills ── */
+  .pill {
+    @apply inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold;
+  }
+  .pill-upcoming  { @apply pill bg-blue-50 text-blue-600; }
+  .pill-active    { @apply pill bg-emerald-50 text-emerald-700; }
+  .pill-completed { @apply pill bg-slate-100 text-slate-500; }
+  .pill-cancelled { @apply pill bg-red-50 text-red-600; }
+
+  /* ── Shimmer skeleton ── */
+  .skeleton {
+    @apply rounded-xl bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200;
+    background-size: 200% 100%;
+    animation: shimmer 1.4s ease-in-out infinite;
+  }
+}
+
+/* ─── Keyframes ─── */
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@keyframes slide-up {
+  from { transform: translateY(24px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+.slide-up { animation: slide-up 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.fade-in { animation: fade-in 0.25s ease-out; }
+
+@keyframes pulse-ring {
+  0%   { transform: scale(1);   opacity: 0.8; }
+  100% { transform: scale(1.9); opacity: 0; }
+}
+.pulse-ring { animation: pulse-ring 1.6s ease-out infinite; }

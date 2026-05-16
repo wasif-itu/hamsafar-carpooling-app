@@ -1,0 +1,318 @@
+# HAMSAFAR — PROJECT BRIEF FOR CLAUDE CODE
+
+You are building HamSafar, a community carpooling web app for Pakistan, as a Human-Computer Interaction (HCI) university project. This is a high-fidelity, mobile-first interactive prototype with mocked data and flows. No real backend. Treat this as a polished, demoable product that a grader will click through on a phone or laptop.
+
+## TECH STACK (USE EXACTLY THIS)
+
+- Next.js 14 with App Router and TypeScript
+- Tailwind CSS for styling
+- shadcn/ui for components (initialize with "new-york" style, slate base color)
+- Lucide React for icons
+- Framer Motion for transitions and animations
+- React Hook Form + Zod for any form validation
+- Zustand for global state (user, auth, rides, trusted contacts)
+- localStorage for persistence across sessions
+- date-fns for date formatting
+- Static placeholder map images (no real Google Maps API key) — use SVG-styled mock maps or a free static map image. For tracking, animate a marker along an SVG path.
+
+## DESIGN PHILOSOPHY
+
+- Mobile-first. Primary canvas is 390px wide.
+- On desktop, center the 390px frame inside a styled phone bezel/mockup for demo purposes. Use a subtle device-frame styling with rounded corners, slight shadow, and a neutral background gradient outside the frame.
+- Trust-first visual language. The brand emphasizes verified peers, safety, and transparency.
+- Clean, modern, restrained. Not playful or childlike. Closer to Careem or Uber in maturity, but warmer and more local.
+- Cultural awareness for Pakistan. Use names like Ahmed, Fatima, Hassan, Aisha. Show prices in PKR (₨). Reference real Pakistani cities, neighborhoods, and universities.
+
+## DESIGN SYSTEM (USE THESE TOKENS EXACTLY)
+
+### Colors (Tailwind config + CSS variables)
+
+- Primary (Trust Teal): #0F766E (teal-700) — main brand color for CTAs, active states
+- Primary Light: #14B8A6 (teal-500)
+- Primary Dark: #134E4A (teal-900)
+- Accent (Safety Coral): #EC4899 (pink-500) — for female-only ride indicators, gender filter active state
+- Verified Blue: #2563EB (blue-600) — for verification badges
+- Success Green: #10B981 (emerald-500)
+- Warning Amber: #F59E0B (amber-500)
+- Danger Red: #DC2626 (red-600) — SOS, urgent
+- Neutral grays: Tailwind's slate scale (50, 100, 200, 300, 500, 700, 900)
+- Background: #FAFAF9 (warm off-white)
+- Surface: #FFFFFF
+- Border: #E7E5E4 (stone-200)
+
+### Typography
+
+- Use Inter from Google Fonts as the primary font, loaded via next/font
+- Display headings: Inter 700, tight letter-spacing
+- Body: Inter 400-500
+- Sizes: text-xs (12), text-sm (14), text-base (16), text-lg (18), text-xl (20), text-2xl (24), text-3xl (30)
+- Line height: relaxed for body, tight for headings
+
+### Spacing & Layout
+
+- Standard padding inside cards: 16px (p-4)
+- Section spacing: 24px (gap-6)
+- Page padding: 20px horizontal (px-5)
+- Border radius: rounded-2xl (16px) for cards, rounded-xl (12px) for inputs, rounded-full for pills and CTAs
+- Shadows: soft, low-elevation. Avoid harsh drop shadows.
+
+### Components Patterns
+
+- Buttons: full-width pill-shaped primary CTA at the bottom of screens (sticky on scroll), height 56px, teal background, white text, semibold
+- Secondary buttons: outlined, teal border, teal text
+- Verification badges: small pill with checkmark icon — Blue for CNIC, Teal for University, Indigo for Workplace
+- Star ratings: gold/amber colored, with numeric next to it
+- Bottom navigation: 5 icons (Home, Find, Active Ride, Inbox, Profile), 64px height, fixed bottom, with active state in primary teal
+
+### Iconography
+
+- Use Lucide React icons throughout
+- Icon size: 20px default, 24px for navigation, 16px inline with text
+- Stroke width: 2
+
+## INFORMATION ARCHITECTURE
+
+Bottom nav (5 tabs):
+1. Home — discovery and ride context selection
+2. Find — search and filter rides
+3. Track — live tracking (or empty state if no active ride)
+4. Inbox — messages and notifications
+5. Profile — settings, verification, savings
+
+## USER PERSONAS (CONTEXT FOR DESIGN DECISIONS)
+
+1. Hamza Tariq, 21, LUMS student, motorcycle commuter, needs reliability and student verification
+2. Sana Rehman, 26, marketing exec, female, needs CNIC verification + female-only filtering + family tracking
+3. Bilal Chaudhry, 34, software engineer, car owner, needs recurring rides + cancellation accountability
+4. Saira Malik, 19, Kinnaird College student, female, needs female-only rides + live family tracking + on-time reliability for classes
+
+## FOLDER STRUCTURE TO CREATE
+hamsafar/
+├── app/
+│   ├── layout.tsx (root layout with phone frame wrapper)
+│   ├── page.tsx (splash redirects to /onboarding or /home)
+│   ├── globals.css
+│   ├── onboarding/
+│   │   ├── page.tsx (carousel)
+│   │   ├── phone/page.tsx
+│   │   ├── otp/page.tsx
+│   │   ├── profile/page.tsx
+│   │   └── verification/
+│   │       ├── page.tsx (choose method)
+│   │       ├── cnic/page.tsx
+│   │       ├── email/page.tsx
+│   │       ├── selfie/page.tsx
+│   │       └── pending/page.tsx
+│   ├── trusted-contacts/page.tsx
+│   ├── home/page.tsx
+│   ├── find/
+│   │   ├── page.tsx (search)
+│   │   ├── results/page.tsx
+│   │   └── filters/page.tsx
+│   ├── ride/
+│   │   ├── [id]/page.tsx (details)
+│   │   └── [id]/request/page.tsx
+│   ├── offer/
+│   │   ├── page.tsx (context)
+│   │   ├── route/page.tsx
+│   │   ├── schedule/page.tsx
+│   │   ├── price/page.tsx
+│   │   └── review/page.tsx
+│   ├── my-rides/page.tsx
+│   ├── track/
+│   │   ├── page.tsx (active ride)
+│   │   └── sos/page.tsx
+│   ├── chat/
+│   │   ├── page.tsx (inbox list)
+│   │   └── [id]/page.tsx (thread)
+│   ├── rate/[id]/page.tsx
+│   ├── profile/
+│   │   ├── page.tsx
+│   │   ├── savings/page.tsx
+│   │   ├── verification/page.tsx
+│   │   └── settings/page.tsx
+│   └── recurring/page.tsx
+├── components/
+│   ├── ui/ (shadcn components)
+│   ├── PhoneFrame.tsx
+│   ├── BottomNav.tsx
+│   ├── TopBar.tsx
+│   ├── RideCard.tsx
+│   ├── UserCard.tsx
+│   ├── VerificationBadge.tsx
+│   ├── StatusPill.tsx
+│   ├── MockMap.tsx
+│   ├── EmptyState.tsx
+│   ├── ContextTile.tsx
+│   ├── FilterChip.tsx
+│   ├── SOSButton.tsx
+│   └── PrimaryButton.tsx
+├── lib/
+│   ├── mockData.ts (rides, users, chats, notifications)
+│   ├── store.ts (Zustand)
+│   ├── types.ts
+│   └── utils.ts
+└── public/
+└── (placeholder images, mock map SVGs)
+
+## MOCK DATA REQUIREMENTS
+
+Create realistic mock data in `lib/mockData.ts`:
+
+- 8-10 mock users with Pakistani names, verification levels, ratings, ride counts, gender, photos (use placeholder avatars from DiceBear or initials in colored circles)
+- 12-15 mock rides across three contexts (campus, city, intercity) with realistic Lahore routes (DHA Phase 5 → LUMS, Johar Town → Gulberg, Bahria Town → Ferozepur Road, Lahore → Islamabad, etc.)
+- 5-6 mock chat threads with realistic conversation snippets
+- 4-5 mock notifications
+- Savings dashboard data: monthly savings, comparison data
+- 2-3 mock trusted contacts
+
+## SCREENS TO BUILD (PRIORITY ORDER)
+
+Build in this order. After each phase, pause and confirm everything renders correctly before moving on.
+
+### PHASE 1 — FOUNDATION (build first, ask me to verify)
+
+1. Project initialization with all dependencies
+2. Tailwind config with custom color tokens
+3. globals.css with CSS variables
+4. PhoneFrame component (the device bezel wrapper)
+5. Root layout that wraps everything in PhoneFrame
+6. Splash screen with HamSafar logo (use a stylized text logotype with a car/route icon — generate a simple SVG logo)
+7. Onboarding carousel (3 slides):
+   - Slide 1: "Verified peers only" — illustrate trust with a shield + checkmark icon
+   - Slide 2: "Split costs transparently" — illustrate with a calculator + PKR icon
+   - Slide 3: "Safety built in" — illustrate with a location pin + people icon
+   - Each slide has illustration, headline, subheading, and a progress indicator. Final slide has "Get Started" button.
+
+### PHASE 2 — ONBOARDING & VERIFICATION
+
+8. Phone number entry (with Pakistan flag prefix +92, format hint)
+9. OTP entry (6-digit, auto-advance between boxes, resend timer)
+10. Basic profile creation (name, gender selection with three pills: Male / Female / Prefer not to say, DOB picker, city dropdown — Lahore/Karachi/Islamabad)
+11. Verification method chooser (3 large cards: CNIC, University Email, Workplace Email — each shows what it unlocks)
+12. CNIC upload (front + back, mock camera/upload buttons, guidance illustration)
+13. University email verification (email input, "send verification" CTA, verification code entry)
+14. Selfie verification (mock camera capture screen, ID-matching animation)
+15. Verification pending state (illustration, "we'll notify you in 24 hours" — but with a "Skip for demo" link that auto-verifies for prototype purposes)
+16. Verification success + "Add Trusted Contacts" prompt
+17. Trusted contacts setup (add up to 5, mark one as primary, mock SMS test button)
+
+### PHASE 3 — HOME & DISCOVERY
+
+18. Home screen:
+   - Top bar: greeting "Assalam o Alaikum, [name]", profile avatar
+   - Hero card: "Tomorrow's commute" (shows next confirmed ride with countdown, or "No rides scheduled" empty state)
+   - Three context tiles (Campus, City, Intercity) with icons and short descriptions
+   - "Quick Actions" section: large Find a Ride + Offer a Ride buttons
+   - "Recent rides" horizontal scroll
+   - Bottom nav
+19. Find a Ride screen:
+   - From and To inputs with map autocomplete styled UI (mock suggestions)
+   - Date picker
+   - Filter chips row (Female-only, Verified-only, 4★+, Same university)
+   - "Search" CTA
+20. Search results — list view:
+   - Ride cards showing driver avatar, name with verification badges, route, time, price per seat, seats remaining, gender composition pill
+   - Toggle to switch to Map view
+21. Search results — map view: mock map with ride pins, bottom sheet showing selected ride card
+22. Filter panel (slide-up sheet): gender preference, rating threshold, verification level, max price slider, departure window
+23. Empty state for no results: illustration + "Notify me when available" toggle
+
+### PHASE 4 — RIDE DETAILS & REQUEST
+
+24. Ride details screen:
+   - Driver card at top: photo, name (first name + last initial), verification badges, star rating, total rides, "Member since" date
+   - Route preview with mock map and pickup pin
+   - Estimated duration and distance
+   - Other passengers (anonymized: "Sara M. ✓ Female 4.8★")
+   - Price breakdown card with "How is this calculated?" expandable
+   - Vehicle details (make, model, color, plate)
+   - Driver's note
+   - "Request to Join" sticky CTA at bottom
+25. Request confirmation modal: review request, optional note input, send
+26. Request pending screen: animated "waiting for driver" state with cancel option
+
+### PHASE 5 — OFFER A RIDE (DRIVER FLOW)
+
+27. Context selection (Campus / City / Intercity)
+28. Route setup: from/to inputs with mock map, add stops option
+29. Schedule: date, time, one-time vs recurring (Daily / Weekdays / Custom days picker)
+30. Price & seats: seats stepper, suggested price (auto-calc shown), override option, gender preference, verification requirement
+31. Review & publish: full summary card, "Publish Ride" CTA, confirmation success screen
+
+### PHASE 6 — MY RIDES & TRACKING
+
+32. My Rides screen with tabs: Upcoming, Active, Past, Recurring
+33. Upcoming ride card with quick actions (View, Chat, Cancel)
+34. Active ride tracking screen:
+   - Full-screen mock map with animated driver marker moving along route
+   - Top: driver info card with photo, name, vehicle, "Driver is 3 mins away"
+   - Side action buttons: Call, Chat, Share with trusted contact, Report
+   - Bottom: route summary with ETA
+   - Persistent red SOS button (top right, prominent)
+35. SOS confirmation screen: hold-to-confirm 3-second animation, alerts being sent
+36. Ride completion: auto cost-split summary, payment method selection (Cash/JazzCash/Easypaisa), confirm payment
+37. Rating screen: 5-star rating, tag chips (Punctual, Polite, Safe driving, Clean car, Quiet ride, Good music), optional comment, submit
+
+### PHASE 7 — CHAT, NOTIFICATIONS, PROFILE
+
+38. Inbox: list of conversations with last message preview, unread badge, notifications mixed in
+39. Chat thread: message bubbles, quick reply templates ("On my way", "Running late", "I'm here"), send pin/location button, attachment icon
+40. Profile main: avatar, name with verification badges, rating, total rides, "Member since", quick stats (rides offered, rides taken, money saved), menu items (Savings Dashboard, Verification, Trusted Contacts, Recurring Rides, Settings, Help, Logout)
+41. Savings dashboard: monthly bar chart (use Recharts), comparison cards (vs. solo driving, vs. ride-hailing), CO2 saved card, streaks, shareable milestone card
+42. Verification management: list of verifications with status, add new option
+43. Settings: account info, notification preferences, default filters, language toggle (English/Urdu), theme toggle, privacy controls, logout, delete account
+
+### PHASE 8 — POLISH
+
+44. Add Framer Motion page transitions (slide-from-right for forward nav, slide-from-left for back)
+45. Loading skeletons for all data screens
+46. Empty states with illustrations
+47. Toast notifications for actions (use sonner or shadcn/ui toast)
+48. Confirm any destructive actions with shadcn AlertDialog
+
+## INTERACTION DETAILS
+
+- All forms should have inline validation
+- All CTAs should give haptic-like feedback (slight scale on press via Framer Motion)
+- Bottom nav active state animates smoothly between tabs
+- Modals slide up from bottom on mobile
+- Loading states use shimmer/skeleton
+- Success states show check animation
+- Use realistic delays (500-1500ms) for mock async actions like verification, login, sending requests
+
+## DEMO MODE BEHAVIOR
+
+This is a prototype. Make all flows clickable end-to-end without real auth/payments:
+- Any OTP is accepted (or auto-fill "123456")
+- CNIC upload accepts any image and auto-passes verification
+- "Skip for demo" button on screens that would normally have delays
+- localStorage persists user state across page refreshes
+- A "Reset Demo" option in Settings that clears localStorage and returns to splash
+
+## TONE & COPY
+
+- Warm, respectful, professional
+- Mix English with appropriate Urdu/Pakistani terms where natural (e.g., "Assalam o Alaikum" greeting, "₨" for prices, refer to drivers as "drivers" not "captains")
+- Avoid corporate jargon
+- Empower female users with clear gender-safe language
+- Cost: always show in PKR with proper formatting (e.g., ₨ 4,500)
+
+## NOW DO THIS
+
+1. Initialize the Next.js 14 project with TypeScript, Tailwind, and App Router
+2. Install all dependencies listed above
+3. Initialize shadcn/ui with new-york style and slate base
+4. Set up the Tailwind config and globals.css with our color tokens
+5. Create the folder structure
+6. Build mockData.ts with the data described above
+7. Build the Zustand store
+8. Build PhoneFrame, BottomNav, TopBar, and PrimaryButton components
+9. Build the splash screen and full onboarding carousel
+10. Run `npm run dev` and confirm everything renders at http://localhost:3000
+
+After Phase 1 is complete, STOP and ask me to verify before continuing to Phase 2. We'll go phase by phase. This keeps the build manageable and lets me catch any direction issues early.
+
+Important: write clean, readable code with comments where logic is non-obvious. Use TypeScript types everywhere. Keep components focused and reusable. Don't take shortcuts that I'd need to fix later.
+
+Let's build HamSafar.

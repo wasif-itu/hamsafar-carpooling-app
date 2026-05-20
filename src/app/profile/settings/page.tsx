@@ -7,6 +7,7 @@ import {
   ChevronRight, RotateCcw, Moon, LogOut,
 } from 'lucide-react';
 import { useStore } from '@/lib/store';
+import { useLang, useT } from '@/lib/i18n';
 
 function Toggle({ value, onChange }: { value: boolean; onChange: (v: boolean) => void }) {
   return (
@@ -30,7 +31,9 @@ export default function SettingsPage() {
   const [notifChat, setNotifChat] = useState(true);
   const [notifPromo, setNotifPromo] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
-  const [language, setLanguage] = useState<'en' | 'ur'>('en');
+  const language = useLang((s) => s.lang);
+  const setLanguage = useLang((s) => s.setLang);
+  const t = useT();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const handleLogout = () => {
@@ -54,14 +57,14 @@ export default function SettingsPage() {
         <button onClick={() => router.back()} className="mb-4 text-white/70">
           <ChevronLeft className="w-6 h-6" strokeWidth={2.5} />
         </button>
-        <h1 className="text-2xl font-extrabold text-white">Settings</h1>
-        <p className="text-white/65 text-sm mt-1">Preferences & privacy</p>
+        <h1 className="text-2xl font-extrabold text-white">{t('settings.title')}</h1>
+        <p className="text-white/65 text-sm mt-1">{t('settings.subtitle')}</p>
       </div>
 
       <div className="flex-1 overflow-y-auto pb-8 px-4 pt-4 space-y-4">
         {/* Account */}
         <div>
-          <p className="text-xs font-bold text-slate-400 uppercase tracking-wider px-1 mb-2">Account</p>
+          <p className="text-xs font-bold text-slate-400 uppercase tracking-wider px-1 mb-2">{t('settings.account')}</p>
           <div className="bg-white rounded-2xl border border-border overflow-hidden">
             {[
               { icon: User, label: 'Edit Profile', desc: user?.name ?? '' },
@@ -83,7 +86,7 @@ export default function SettingsPage() {
 
         {/* Notifications */}
         <div>
-          <p className="text-xs font-bold text-slate-400 uppercase tracking-wider px-1 mb-2">Notifications</p>
+          <p className="text-xs font-bold text-slate-400 uppercase tracking-wider px-1 mb-2">{t('settings.notifications')}</p>
           <div className="bg-white rounded-2xl border border-border overflow-hidden">
             {[
               { label: 'Ride updates', desc: 'Request accepted, driver en route', value: notifRide, onChange: setNotifRide },
@@ -106,14 +109,14 @@ export default function SettingsPage() {
 
         {/* Appearance */}
         <div>
-          <p className="text-xs font-bold text-slate-400 uppercase tracking-wider px-1 mb-2">Appearance</p>
+          <p className="text-xs font-bold text-slate-400 uppercase tracking-wider px-1 mb-2">{t('settings.appearance')}</p>
           <div className="bg-white rounded-2xl border border-border overflow-hidden">
             <div className="flex items-center gap-3 px-4 py-3.5 border-b border-border">
               <div className="w-9 h-9 bg-slate-50 rounded-xl flex items-center justify-center flex-shrink-0">
                 <Moon className="w-4 h-4 text-slate-600" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-slate-900">Dark Mode</p>
+                <p className="text-sm font-semibold text-slate-900">{t('settings.darkMode')}</p>
                 <p className="text-xs text-slate-400">Coming soon</p>
               </div>
               <Toggle value={darkMode} onChange={setDarkMode} />
@@ -123,7 +126,7 @@ export default function SettingsPage() {
                 <Globe className="w-4 h-4 text-slate-600" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-slate-900">Language</p>
+                <p className="text-sm font-semibold text-slate-900">{t('settings.language')}</p>
                 <p className="text-xs text-slate-400">App display language</p>
               </div>
               <div className="flex bg-slate-100 rounded-lg p-0.5">
@@ -152,7 +155,7 @@ export default function SettingsPage() {
               <div className="w-9 h-9 bg-red-50 rounded-xl flex items-center justify-center flex-shrink-0">
                 <LogOut className="w-4 h-4 text-red-500" />
               </div>
-              <p className="flex-1 text-left text-sm font-semibold text-red-600">Log out</p>
+              <p className="flex-1 text-left text-sm font-semibold text-red-600">{t('settings.logout')}</p>
             </button>
             <button
               onClick={handleReset}

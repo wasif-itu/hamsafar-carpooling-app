@@ -8,6 +8,7 @@ import {
   TrendingUp, MapPin, Zap, GraduationCap, Clock, Users,
 } from 'lucide-react';
 import { useStore, useCurrentUser, useRides } from '@/lib/store';
+import { useT } from '@/lib/i18n';
 import { POPULAR_ROUTES } from '@/lib/mockData';
 import RideCard from '@/components/RideCard';
 import BottomNav from '@/components/BottomNav';
@@ -60,6 +61,7 @@ export default function HomePage() {
   const rides = useRides();
   const unread = useStore((s) => s.notifications.filter((n) => !n.read).length);
   const [activeCtx, setActiveCtx] = useState<Context>('all');
+  const t = useT();
 
   useEffect(() => {
     if (!user) router.replace('/');
@@ -180,7 +182,7 @@ export default function HomePage() {
                 <Search className="w-5 h-5 text-primary" />
               </div>
               <div>
-                <p className="font-semibold text-slate-900 text-sm">Find a Ride</p>
+                <p className="font-semibold text-slate-900 text-sm">{t('home.findRide')}</p>
                 <p className="text-xs text-slate-400">{upcoming.length} available</p>
               </div>
             </div>
@@ -191,7 +193,7 @@ export default function HomePage() {
                 <Car className="w-5 h-5 text-amber-500" />
               </div>
               <div>
-                <p className="font-semibold text-slate-900 text-sm">Offer a Ride</p>
+                <p className="font-semibold text-slate-900 text-sm">{t('home.offerRide')}</p>
                 <p className="text-xs text-slate-400">Earn while commuting</p>
               </div>
             </div>
@@ -290,7 +292,7 @@ export default function HomePage() {
         {/* ── Popular routes ── */}
         <div className="pb-2">
           <div className="flex items-center justify-between mb-3">
-            <h2 className="font-bold text-slate-900 text-[15px]">Popular Routes</h2>
+            <h2 className="font-bold text-slate-900 text-[15px]">{t('home.popularRoutes')}</h2>
             <Zap className="w-4 h-4 text-amber-400" />
           </div>
           <div className="flex flex-col gap-2">

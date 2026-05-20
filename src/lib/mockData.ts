@@ -4,8 +4,16 @@ import type {
 
 // ─── Helpers ───────────────────────────────────────────────────────────────
 
-const avatar = (seed: string) =>
-  `https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf`;
+const MALE_TOPS = 'shortFlat,shortRound,shortWaved,shortCurly,theCaesar,frizzle,dreads01,sides';
+const FEMALE_TOPS = 'longButNotTooLong,straight01,straight02,bob,bun,curly,miaWallace,hijab';
+const MALE_FACIAL = 'beardLight,beardMajestic,beardMedium';
+
+const avatar = (seed: string, gender: 'male' | 'female' = 'male') => {
+  const top = gender === 'female' ? FEMALE_TOPS : MALE_TOPS;
+  const facialProb = gender === 'male' ? 50 : 0;
+  const facial = gender === 'male' ? `&facialHair=${MALE_FACIAL}` : '';
+  return `https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf&top=${top}${facial}&facialHairProbability=${facialProb}`;
+};
 
 // ─── Users ─────────────────────────────────────────────────────────────────
 
@@ -18,7 +26,7 @@ export const USERS: User[] = [
     gender: 'male',
     city: 'Lahore',
     university: 'LUMS',
-    avatar: avatar('Hamza'),
+    avatar: avatar('Hamza', 'male'),
     bio: 'CS final year at LUMS. Daily commute DHA ↔ LUMS.',
     rating: 4.8,
     totalRides: 47,
@@ -43,7 +51,7 @@ export const USERS: User[] = [
     gender: 'female',
     city: 'Lahore',
     workplace: 'Dentsu Creative Lahore',
-    avatar: avatar('Sana'),
+    avatar: avatar('Sana', 'female'),
     bio: 'Marketing exec at Dentsu. Gulberg ↔ MM Alam daily.',
     rating: 4.9,
     totalRides: 89,
@@ -68,7 +76,7 @@ export const USERS: User[] = [
     gender: 'male',
     city: 'Lahore',
     workplace: 'Systems Limited',
-    avatar: avatar('Bilal'),
+    avatar: avatar('Bilal', 'male'),
     bio: 'Sr. engineer at Systems Ltd. Johar Town ↔ Arfa Tech Park.',
     rating: 4.7,
     totalRides: 134,
@@ -91,7 +99,7 @@ export const USERS: User[] = [
     gender: 'female',
     city: 'Lahore',
     university: 'Kinnaird College',
-    avatar: avatar('Saira'),
+    avatar: avatar('Saira', 'female'),
     bio: 'Psychology student at Kinnaird. Bahria Town ↔ Campus.',
     rating: 4.6,
     totalRides: 23,
@@ -114,7 +122,7 @@ export const USERS: User[] = [
     gender: 'male',
     city: 'Lahore',
     university: 'FAST NUCES',
-    avatar: avatar('Ahmed'),
+    avatar: avatar('Ahmed', 'male'),
     rating: 4.5,
     totalRides: 62,
     ridesOffered: 28,
@@ -136,7 +144,7 @@ export const USERS: User[] = [
     gender: 'female',
     city: 'Islamabad',
     university: 'NUST',
-    avatar: avatar('Fatima'),
+    avatar: avatar('Fatima', 'female'),
     bio: 'MBA student at NUST. F-10 ↔ H-12 NUST campus.',
     rating: 4.9,
     totalRides: 41,
@@ -160,7 +168,7 @@ export const USERS: User[] = [
     gender: 'male',
     city: 'Karachi',
     workplace: 'HBL Bank',
-    avatar: avatar('Usman'),
+    avatar: avatar('Usman', 'male'),
     bio: 'Banker at HBL. Clifton ↔ I.I. Chundrigar Road.',
     rating: 4.4,
     totalRides: 78,
@@ -183,7 +191,7 @@ export const USERS: User[] = [
     gender: 'female',
     city: 'Karachi',
     university: 'IBA Karachi',
-    avatar: avatar('Aisha'),
+    avatar: avatar('Aisha', 'female'),
     bio: 'IBA Finance student. Gulshan ↔ IBA City Campus.',
     rating: 4.8,
     totalRides: 31,

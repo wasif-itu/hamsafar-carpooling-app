@@ -8,22 +8,24 @@ import {
   LogOut, ChevronRight, Star, Car,
 } from 'lucide-react';
 import { useStore } from '@/lib/store';
+import { useT } from '@/lib/i18n';
 import { UserBadges } from '@/components/VerificationBadge';
 import BottomNav from '@/components/BottomNav';
 
 const MENU = [
-  { href: '/profile/savings',      icon: TrendingUp, label: 'Savings Dashboard',   desc: 'Your cost savings & CO₂ impact' },
-  { href: '/profile/verification', icon: Shield,      label: 'Verification',        desc: 'Manage your verified IDs' },
-  { href: '/onboarding/trusted-contacts', icon: Users, label: 'Trusted Contacts',   desc: 'Emergency contacts' },
-  { href: '/my-rides',             icon: Repeat2,    label: 'My Rides',            desc: 'History & recurring rides' },
-  { href: '/profile/settings',     icon: Settings,   label: 'Settings',            desc: 'Preferences & privacy' },
-  { href: '/profile/settings',     icon: HelpCircle, label: 'Help & Support',      desc: 'FAQs and contact us' },
+  { href: '/profile/savings',      icon: TrendingUp, key: 'profile.savings',      desc: 'Your cost savings & CO₂ impact' },
+  { href: '/profile/verification', icon: Shield,      key: 'profile.verification', desc: 'Manage your verified IDs' },
+  { href: '/onboarding/trusted-contacts', icon: Users, key: 'profile.trusted',    desc: 'Emergency contacts' },
+  { href: '/my-rides',             icon: Repeat2,    key: 'profile.myRides',      desc: 'History & recurring rides' },
+  { href: '/profile/settings',     icon: Settings,   key: 'profile.settings',     desc: 'Preferences & privacy' },
+  { href: '/profile/settings',     icon: HelpCircle, key: 'profile.help',         desc: 'FAQs and contact us' },
 ];
 
 export default function ProfilePage() {
   const router = useRouter();
   const user = useStore((s) => s.user);
   const logout = useStore((s) => s.logout);
+  const t = useT();
 
   useEffect(() => {
     if (!user) router.replace('/');
@@ -110,8 +112,10 @@ export default function ProfilePage() {
 
         {/* Menu */}
         <div className="bg-white rounded-2xl border border-border overflow-hidden">
-          {MENU.map(({ href, icon: Icon, label, desc }, i) => (
-            <Link key={label} href={href}>
+          {MENU.map(({ href, icon: Icon, key, desc }, i) => {
+            const label = t(key);
+            return (
+            <Link key={key} href={href}>
               <motion.div
                 whileTap={{ backgroundColor: '#F8FAFC' }}
                 className={`flex items-center gap-3 px-4 py-3.5 ${i < MENU.length - 1 ? 'border-b border-border' : ''}`}
@@ -126,7 +130,8 @@ export default function ProfilePage() {
                 <ChevronRight className="w-4 h-4 text-slate-300 flex-shrink-0" />
               </motion.div>
             </Link>
-          ))}
+            );
+          })}
         </div>
 
         {/* Logout */}

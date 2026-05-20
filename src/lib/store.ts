@@ -73,7 +73,7 @@ export const useStore = create<Store>()(
       onboardingDone: false,
 
       login: (user) => set({ user, isAuthenticated: true }),
-      logout: () => set({ user: null, isAuthenticated: false }),
+      logout: () => set({ user: null, isAuthenticated: false, onboardingDone: false }),
       setOnboardingDone: () => set({ onboardingDone: true }),
       updateUser: (partial) =>
         set((s) => ({ user: s.user ? { ...s.user, ...partial } : s.user })),

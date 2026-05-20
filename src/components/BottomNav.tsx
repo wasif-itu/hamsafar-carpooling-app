@@ -4,17 +4,19 @@ import { usePathname } from 'next/navigation';
 import { Home, Search, Navigation, MessageSquare, User } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useStore } from '@/lib/store';
+import { useT } from '@/lib/i18n';
 
 const NAV = [
-  { href: '/home',     icon: Home,          label: 'Home' },
-  { href: '/find',     icon: Search,        label: 'Find' },
-  { href: '/track',    icon: Navigation,    label: 'Track' },
-  { href: '/chat',     icon: MessageSquare, label: 'Inbox' },
-  { href: '/profile',  icon: User,          label: 'Profile' },
+  { href: '/home',     icon: Home,          key: 'nav.home' },
+  { href: '/find',     icon: Search,        key: 'nav.find' },
+  { href: '/track',    icon: Navigation,    key: 'nav.track' },
+  { href: '/chat',     icon: MessageSquare, key: 'nav.inbox' },
+  { href: '/profile',  icon: User,          key: 'nav.profile' },
 ];
 
 export default function BottomNav() {
   const pathname = usePathname();
+  const t = useT();
   const threads = useStore((s) => s.threads);
   const chatUnread = threads.reduce(
     (acc, t) => acc + t.messages.filter((m) => !m.read && m.senderId !== 'u1').length,
@@ -28,7 +30,8 @@ export default function BottomNav() {
   return (
     <nav className="bottom-nav">
       <div className="flex items-center justify-around px-2 pt-2 pb-1">
-        {NAV.map(({ href, icon: Icon, label }) => {
+        {NAV.map(({ href, icon: Icon, key }) => {
+          const label = t(key);
           const active = pathname === href || pathname.startsWith(href + '/');
           const badge = badges[href] ?? 0;
 
